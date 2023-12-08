@@ -5,6 +5,9 @@ import com.hendisantika.springbootquartz.entity.SchedulerJobInfo;
 import com.hendisantika.springbootquartz.service.SchedulerJobService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.quartz.SchedulerException;
+import org.quartz.SchedulerMetaData;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,5 +42,11 @@ public class JobController {
             log.error("updateCron ex:", e);
         }
         return message;
+    }
+
+    @GetMapping("/metaData")
+    public Object metaData() throws SchedulerException {
+        SchedulerMetaData metaData = scheduleJobService.getMetaData();
+        return metaData;
     }
 }
