@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.UUID;
+
 /**
  * Created by IntelliJ IDEA.
  * Project : spring-boot-quartz
@@ -23,8 +25,8 @@ import lombok.ToString;
 public class SchedulerJobInfo {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String jobId;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID jobId;
     private String jobName;
     private String jobGroup;
     private String jobStatus;

@@ -105,7 +105,16 @@
                         </div>
                         <div class="input-group">
                             <span class="input-group-addon">Job Group</span>
-                            <input alias="no-edit" class="form-control" id="edit_group" name="jobGroup" type="text"/>
+                            <!--                            <input alias="no-edit" class="form-control" id="edit_group" name="jobGroup" type="text"/>-->
+                            <!--                            <select id="edit_group" name="jobGroup">-->
+                            <!--                                <option value="CronJob" text="CronJob"></option>-->
+                            <!--                                <option value="Simple Job" text="Simple Job"></option>-->
+                            <!--                            </select>-->
+                            <select class="form-control" data-size="10" id="edit_jobGroup" name="jobGroup">
+                                <option value=""></option>
+                                <option value="CronJob">Cron Job</option>
+                                <option value="SimpleJob">Simple Job</option>
+                            </select>
                         </div>
                         <div class="input-group">
                             <span class="input-group-addon">Cron Expression</span>
