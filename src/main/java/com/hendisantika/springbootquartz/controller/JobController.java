@@ -85,4 +85,18 @@ public class JobController {
         }
         return message;
     }
+
+    @RequestMapping(value = "/resumeJob", method = {RequestMethod.GET, RequestMethod.POST})
+    public Object resumeJob(SchedulerJobInfo job) {
+        log.info("params, job = {}", job);
+        Message message = Message.failure();
+        try {
+            scheduleJobService.resumeJob(job);
+            message = Message.success();
+        } catch (Exception e) {
+            message.setMsg(e.getMessage());
+            log.error("resumeJob ex:", e);
+        }
+        return message;
+    }
 }
