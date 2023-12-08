@@ -12,4 +12,13 @@
 
 Home Page
 
+![Home Page](img/list.png "Home Page")
+
+Create New Scheduler Job
+
+![Create New Scheduler Job](img/add1.png "Create New Scheduler Job")
+
+![Create New Scheduler Job](img/add2.png "Create New Scheduler Job")
+
+![Create New Scheduler Job](img/add3.png "Create New Scheduler Job")
 
