@@ -71,4 +71,18 @@ public class JobController {
         }
         return message;
     }
+
+    @RequestMapping(value = "/pauseJob", method = {RequestMethod.GET, RequestMethod.POST})
+    public Object pauseJob(SchedulerJobInfo job) {
+        log.info("params, job = {}", job);
+        Message message = Message.failure();
+        try {
+            scheduleJobService.pauseJob(job);
+            message = Message.success();
+        } catch (Exception e) {
+            message.setMsg(e.getMessage());
+            log.error("pauseJob ex:", e);
+        }
+        return message;
+    }
 }
