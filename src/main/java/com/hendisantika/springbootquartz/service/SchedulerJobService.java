@@ -63,4 +63,17 @@ public class SchedulerJobService {
         }
     }
 
+    public boolean pauseJob(SchedulerJobInfo jobInfo) {
+        try {
+            SchedulerJobInfo getJobInfo = schedulerRepository.findByJobName(jobInfo.getJobName());
+            getJobInfo.setJobStatus("PAUSED");
+            schedulerRepository.save(getJobInfo);
+            schedulerFactoryBean.getScheduler().pauseJob(new JobKey(jobInfo.getJobName(), jobInfo.getJobGroup()));
+            log.info(">>>>> jobName = [" + jobInfo.getJobName() + "]" + " paused.");
+            return true;
+        } catch (SchedulerException e) {
+            log.error("Failed to pause job - {}", jobInfo.getJobName(), e);
+            return false;
+        }
+    }
 }
