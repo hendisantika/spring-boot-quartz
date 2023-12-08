@@ -5,6 +5,7 @@ import com.hendisantika.springbootquartz.entity.SchedulerJobInfo;
 import com.hendisantika.springbootquartz.repository.SchedulerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.quartz.JobKey;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.SchedulerMetaData;
@@ -48,6 +49,18 @@ public class SchedulerJobService {
 
     public List<SchedulerJobInfo> getAllJobList() {
         return schedulerRepository.findAll();
+    }
+
+    public boolean deleteJob(SchedulerJobInfo jobInfo) {
+        try {
+            SchedulerJobInfo getJobInfo = schedulerRepository.findByJobName(jobInfo.getJobName());
+            schedulerRepository.delete(getJobInfo);
+            log.info(">>>>> jobName = [" + jobInfo.getJobName() + "]" + " deleted.");
+            return schedulerFactoryBean.getScheduler().deleteJob(new JobKey(jobInfo.getJobName(), jobInfo.getJobGroup()));
+        } catch (SchedulerException e) {
+            log.error("Failed to delete job - {}", jobInfo.getJobName(), e);
+            return false;
+        }
     }
 
 }
