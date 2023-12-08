@@ -57,4 +57,18 @@ public class JobController {
         List<SchedulerJobInfo> jobList = scheduleJobService.getAllJobList();
         return jobList;
     }
+
+    @RequestMapping(value = "/runJob", method = {RequestMethod.GET, RequestMethod.POST})
+    public Object runJob(SchedulerJobInfo job) {
+        log.info("params, job = {}", job);
+        Message message = Message.failure();
+        try {
+            scheduleJobService.startJobNow(job);
+            message = Message.success();
+        } catch (Exception e) {
+            message.setMsg(e.getMessage());
+            log.error("runJob ex:", e);
+        }
+        return message;
+    }
 }
