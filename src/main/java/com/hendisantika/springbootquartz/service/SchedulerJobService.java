@@ -1,6 +1,7 @@
 package com.hendisantika.springbootquartz.service;
 
 import com.hendisantika.springbootquartz.component.JobScheduleCreator;
+import com.hendisantika.springbootquartz.entity.SchedulerJobInfo;
 import com.hendisantika.springbootquartz.repository.SchedulerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +12,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -41,6 +44,10 @@ public class SchedulerJobService {
     public SchedulerMetaData getMetaData() throws SchedulerException {
         SchedulerMetaData metaData = scheduler.getMetaData();
         return metaData;
+    }
+
+    public List<SchedulerJobInfo> getAllJobList() {
+        return schedulerRepository.findAll();
     }
 
 }
