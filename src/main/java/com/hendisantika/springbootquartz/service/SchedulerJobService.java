@@ -76,4 +76,18 @@ public class SchedulerJobService {
             return false;
         }
     }
+
+    public boolean resumeJob(SchedulerJobInfo jobInfo) {
+        try {
+            SchedulerJobInfo getJobInfo = schedulerRepository.findByJobName(jobInfo.getJobName());
+            getJobInfo.setJobStatus("RESUMED");
+            schedulerRepository.save(getJobInfo);
+            schedulerFactoryBean.getScheduler().resumeJob(new JobKey(jobInfo.getJobName(), jobInfo.getJobGroup()));
+            log.info(">>>>> jobName = [" + jobInfo.getJobName() + "]" + " resumed.");
+            return true;
+        } catch (SchedulerException e) {
+            log.error("Failed to resume job - {}", jobInfo.getJobName(), e);
+            return false;
+        }
+    }
 }
