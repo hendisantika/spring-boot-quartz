@@ -99,4 +99,18 @@ public class JobController {
         }
         return message;
     }
+
+    @RequestMapping(value = "/deleteJob", method = {RequestMethod.GET, RequestMethod.POST})
+    public Object deleteJob(SchedulerJobInfo job) {
+        log.info("params, job = {}", job);
+        Message message = Message.failure();
+        try {
+            scheduleJobService.deleteJob(job);
+            message = Message.success();
+        } catch (Exception e) {
+            message.setMsg(e.getMessage());
+            log.error("deleteJob ex:", e);
+        }
+        return message;
+    }
 }
