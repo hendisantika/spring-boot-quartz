@@ -1,5 +1,6 @@
 package com.hendisantika.springbootquartz.config;
 
+import org.quartz.spi.TriggerFiredBundle;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -24,5 +25,11 @@ public class SchedulerJobFactory extends SpringBeanJobFactory implements Applica
         beanFactory = context.getAutowireCapableBeanFactory();
     }
 
+    @Override
+    protected Object createJobInstance(final TriggerFiredBundle bundle) throws Exception {
+        final Object job = super.createJobInstance(bundle);
+        beanFactory.autowireBean(job);
+        return job;
+    }
 
 }
