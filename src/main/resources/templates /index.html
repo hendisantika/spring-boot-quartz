@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Job Scheduler</title>
+    <link href="/static/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+        .btnRun, .btnPause, .btnResume, .btnEdit {
+            margin-right: 8px;
+        }
+
+        .input-group {
+            margin-bottom: 5px;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 30px;
+            margin-top: 15px;
+        }
+
+        .btnCreate {
+            text-align: right;
+            margin: 5px 15px;
+        }
+
+        .head {
+            border: solid;
+            border-color: #8080805c;
+            border-width: 1px;
+        }
+
+        .line {
+            border: 0;
+            height: 1px;
+            background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.23), rgba(0, 0, 0, 0));
+        }
+    </style>
+</head>
+<body style="background-color:rgb(225, 245, 192);">
+
+<div class="container-fluid" style="padding-top: 15px;">
+
+    <div class="head">
+        <div class="title">JOB MANAGEMENT CONSOLE</div>
+        <hr class="line">
+        <div class="btnCreate">
+            <button class="btn btn-primary" data-toggle="modal" id="createBtn" type="button">Create</button>
+        </div>
+    </div>
+
+
+    <table class="table table-bordered">
+        <thead>
+        <tr class="active">
+            <th>Id</th>
+            <th>Name</th>
+            <th>Group</th>
+            <th>Crons</th>
+            <th>State</th>
+            <th>Description</th>
+            <!-- <th>interface</th> -->
+            <th style="text-align: center;">Operation</th>
+        </tr>
+        </thead>
+        <tbody th:each="item : ${jobs}">
+        <tr th:attr="data-id=${item.jobId}">
+            <td th:text="${item.jobId}"></td>
+            <td th:id="${'name_' + item.jobId}" th:text="${item.jobName}"></td>
+            <td th:id="${'group_' + item.jobId}" th:text="${item.jobGroup}"></td>
+            <td th:id="${'cron_' + item.jobId}" th:text="${item.cronExpression}"></td>
+            <td th:id="${'status_' + item.jobId}" th:text="${item.jobStatus}"></td>
+            <td th:id="${'desc_' + item.jobId}" th:text="${item.desc}"></td>
+            <!-- <td>$!item.interfaceName</td> -->
+            <td style="text-align: center;">
+                <div class="btn-group text-center" role="group"
+                     th:attr="data-id=${item.jobId}">
+                    <button class="btn btn-default btnRun" type="button">Run Once</button>
+                    <button class="btn btn-default btnPause" type="button">Pause</button>
+                    <button class="btn btn-default btnResume" type="button">Resume</button>
+                    <button class="btn btn-default btnEdit" type="button">Edit</button>
+                    <button class="btn btn-warning btnDelete" type="button">Delete</button>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div aria-hidden="true" aria-labelledby="myModalLabel" class="modal fade" id="myModal" role="dialog" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" class="close" data-dismiss="modal" type="button">×</button>
+                <h4 class="modal-title" id="myModalLabel">Cron Create</h4>
+            </div>
+            <div class="modal-body">
+                <form action="" id="mainForm">
+                    <div>
+                        <input class="form-control" id="jobId" name="jobId" type="hidden"/>
+                        <div class="input-group">
+                            <span class="input-group-addon">Job Name</span>
+                            <input alias="no-edit" class="form-control" id="edit_name" name="jobName" type="text"/>
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon">Job Group</span>
+                            <input alias="no-edit" class="form-control" id="edit_group" name="jobGroup" type="text"/>
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon">Cron Expression</span>
+                            <input alias="no-edit" class="form-control" id="edit_cron" name="cronExpression"
+                                   type="text"/>
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon">Job Status</span>
+                            <select class="form-control" data-size="10" disabled="disabled" id="edit_status"
+                                    name="jobStatus">
+                                <option value=""></option>
+                                <option value="NORMAL">NORMAL</option>
+                                <option value="PAUSED">PAUSED</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon">Job Description</span>
+                            <input alias="no-edit" class="form-control" id="edit_desc" name="desc" type="text"/>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" data-dismiss="modal" type="button">Cancel</button>
+                <button class="btn btn-primary" id="save" type="button">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/js/jquery.min.js" type="text/javascript"></script>
+<script src="/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="/js/bootstrap-select.min.js" type="text/javascript"></script>
+<script src="/js/index.js" type="text/javascript"></script>
+</body>
+</html>
