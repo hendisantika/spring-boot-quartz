@@ -90,4 +90,18 @@ public class SchedulerJobService {
             return false;
         }
     }
+
+    public boolean startJobNow(SchedulerJobInfo jobInfo) {
+        try {
+            SchedulerJobInfo getJobInfo = schedulerRepository.findByJobName(jobInfo.getJobName());
+            getJobInfo.setJobStatus("SCHEDULED & STARTED");
+            schedulerRepository.save(getJobInfo);
+            schedulerFactoryBean.getScheduler().triggerJob(new JobKey(jobInfo.getJobName(), jobInfo.getJobGroup()));
+            log.info(">>>>> jobName = [" + jobInfo.getJobName() + "]" + " scheduled and started now.");
+            return true;
+        } catch (SchedulerException e) {
+            log.error("Failed to start new job - {}", jobInfo.getJobName(), e);
+            return false;
+        }
+    }
 }
