@@ -1,5 +1,6 @@
 package com.hendisantika.springbootquartz;
 
+import jakarta.annotation.PostConstruct;
 import org.quartz.JobDetail;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
@@ -8,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import javax.annotation.PostConstruct;
 
 @SpringBootApplication
 public class SpringBootQuartzApplication {
