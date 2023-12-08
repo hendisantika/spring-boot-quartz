@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -158,6 +159,25 @@ public class SchedulerJobService {
             }
         } catch (ClassNotFoundException e) {
             log.error("Class Not Found - {}", jobInfo.getJobClass(), e);
+        } catch (SchedulerException e) {
+            log.error(e.getMessage(), e);
+        }
+    }
+
+    private void updateScheduleJob(SchedulerJobInfo jobInfo) {
+        Trigger newTrigger;
+        if (jobInfo.getCronJob()) {
+            newTrigger = scheduleCreator.createCronTrigger(jobInfo.getJobName(), new Date(),
+                    jobInfo.getCronExpression(), SimpleTrigger.MISFIRE_INSTRUCTION_FIRE_NOW);
+        } else {
+            newTrigger = scheduleCreator.createSimpleTrigger(jobInfo.getJobName(), new Date(), jobInfo.getRepeatTime(),
+                    SimpleTrigger.MISFIRE_INSTRUCTION_FIRE_NOW);
+        }
+        try {
+            schedulerFactoryBean.getScheduler().rescheduleJob(TriggerKey.triggerKey(jobInfo.getJobName()), newTrigger);
+            jobInfo.setJobStatus("EDITED & SCHEDULED");
+            schedulerRepository.save(jobInfo);
+            log.info(">>>>> jobName = [" + jobInfo.getJobName() + "]" + " updated and scheduled.");
         } catch (SchedulerException e) {
             log.error(e.getMessage(), e);
         }
