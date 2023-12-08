@@ -4,10 +4,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.quartz.CronTrigger;
 import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
+import org.quartz.SimpleTrigger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.quartz.CronTriggerFactoryBean;
 import org.springframework.scheduling.quartz.JobDetailFactoryBean;
 import org.springframework.scheduling.quartz.QuartzJobBean;
+import org.springframework.scheduling.quartz.SimpleTriggerFactoryBean;
 import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
@@ -54,6 +56,17 @@ public class JobScheduleCreator {
         } catch (ParseException e) {
             log.error(e.getMessage(), e);
         }
+        return factoryBean.getObject();
+    }
+
+    public SimpleTrigger createSimpleTrigger(String triggerName, Date startTime, Long repeatTime, int misFireInstruction) {
+        SimpleTriggerFactoryBean factoryBean = new SimpleTriggerFactoryBean();
+        factoryBean.setName(triggerName);
+        factoryBean.setStartTime(startTime);
+        factoryBean.setRepeatInterval(repeatTime);
+        factoryBean.setRepeatCount(SimpleTrigger.REPEAT_INDEFINITELY);
+        factoryBean.setMisfireInstruction(misFireInstruction);
+        factoryBean.afterPropertiesSet();
         return factoryBean.getObject();
     }
 }
