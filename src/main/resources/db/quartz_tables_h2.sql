@@ -5,6 +5,20 @@
 -- In your Quartz properties file, you'll need to set
 -- org.quartz.jobStore.driverDelegateClass = org.quartz.impl.jdbcjobstore.StdJDBCDelegate
 
+CREATE TABLE scheduler_job_info
+(
+    job_id          VARCHAR(120) NOT NULL PRIMARY KEY,
+    job_name        VARCHAR(120) NOT NULL,
+    job_group       VARCHAR(120) NOT NULL,
+    job_status      VARCHAR(120) NOT NULL,
+    job_class       VARCHAR(120) NOT NULL,
+    cron_expression VARCHAR(120) NOT NULL,
+    desc            VARCHAR(120) NOT NULL,
+    interface_name  VARCHAR(120) NOT NULL,
+    repeat_time     bigint       NOT NULL,
+    cron_job        boolean      NOT NULL
+);
+
 CREATE TABLE qrtz_calendars
 (
     sched_name    VARCHAR(120) NOT NULL,

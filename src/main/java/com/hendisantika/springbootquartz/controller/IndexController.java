@@ -25,7 +25,7 @@ public class IndexController {
 
     private final SchedulerJobService scheduleJobService;
 
-    @GetMapping("/index")
+    @GetMapping("/")
     public String index(Model model) {
         List<SchedulerJobInfo> jobList = scheduleJobService.getAllJobList();
         model.addAttribute("jobs", jobList);
