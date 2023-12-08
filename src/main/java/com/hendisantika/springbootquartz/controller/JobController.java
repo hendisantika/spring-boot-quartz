@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * Created by IntelliJ IDEA.
  * Project : spring-boot-quartz
@@ -48,5 +50,11 @@ public class JobController {
     public Object metaData() throws SchedulerException {
         SchedulerMetaData metaData = scheduleJobService.getMetaData();
         return metaData;
+    }
+
+    @GetMapping("/getAllJobs")
+    public Object getAllJobs() throws SchedulerException {
+        List<SchedulerJobInfo> jobList = scheduleJobService.getAllJobList();
+        return jobList;
     }
 }
