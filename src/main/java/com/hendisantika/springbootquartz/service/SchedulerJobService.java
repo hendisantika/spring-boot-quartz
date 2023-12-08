@@ -2,6 +2,8 @@ package com.hendisantika.springbootquartz.service;
 
 import com.hendisantika.springbootquartz.component.JobScheduleCreator;
 import com.hendisantika.springbootquartz.entity.SchedulerJobInfo;
+import com.hendisantika.springbootquartz.job.SampleCronJob;
+import com.hendisantika.springbootquartz.job.SimpleJob;
 import com.hendisantika.springbootquartz.repository.SchedulerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +15,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -103,5 +106,26 @@ public class SchedulerJobService {
             log.error("Failed to start new job - {}", jobInfo.getJobName(), e);
             return false;
         }
+    }
+
+    @SuppressWarnings("deprecation")
+    public void saveOrUpdate(SchedulerJobInfo scheduleJob) throws Exception {
+        if (scheduleJob.getCronExpression().length() > 0) {
+            scheduleJob.setJobClass(SampleCronJob.class.getName());
+            scheduleJob.setCronJob(true);
+        } else {
+            scheduleJob.setJobClass(SimpleJob.class.getName());
+            scheduleJob.setCronJob(false);
+            scheduleJob.setRepeatTime((long) 1);
+        }
+        if (StringUtils.isEmpty(scheduleJob.getJobId())) {
+            log.info("Job Info: {}", scheduleJob);
+            scheduleNewJob(scheduleJob);
+        } else {
+            updateScheduleJob(scheduleJob);
+        }
+        scheduleJob.setDesc("i am job number " + scheduleJob.getJobId());
+        scheduleJob.setInterfaceName("interface_" + scheduleJob.getJobId());
+        log.info(">>>>> jobName = [" + scheduleJob.getJobName() + "]" + " created.");
     }
 }
