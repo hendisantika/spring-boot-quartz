@@ -5,6 +5,8 @@ import com.hendisantika.springbootquartz.repository.SchedulerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
+import org.quartz.SchedulerMetaData;
 import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.stereotype.Service;
@@ -35,4 +37,10 @@ public class SchedulerJobService {
     private final ApplicationContext context;
 
     private final JobScheduleCreator scheduleCreator;
+
+    public SchedulerMetaData getMetaData() throws SchedulerException {
+        SchedulerMetaData metaData = scheduler.getMetaData();
+        return metaData;
+    }
+
 }
